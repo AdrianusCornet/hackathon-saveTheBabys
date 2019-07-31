@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { handleKeyDown } from '../../managers/input'
 
 export default class Canvas extends Component {
   state = {
@@ -32,8 +33,7 @@ export default class Canvas extends Component {
   componentDidMount() {
     // set up input
     window.addEventListener('keydown', event => {
-
-      console.log('key code:', event.keyCode)
+      handleKeyDown(event)
 
       if (event.keyCode === 32) {
         this.setState({
