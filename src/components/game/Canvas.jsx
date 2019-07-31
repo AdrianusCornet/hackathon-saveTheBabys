@@ -1,30 +1,61 @@
 import React, { Component } from 'react'
 
 export default class Canvas extends Component {
-  state ={
-    ctx: null
+  state = {
+    ctx: null,
+    key: false,
+    x:0,
   }
 
-  update() {
+  mainLoop() {
     const ctx = this.state.ctx
 
-    ctx.beginPath();
-    ctx.rect(20, 40, 50, 50);
-    ctx.fillStyle = "#FF0000";
-    ctx.fill();
-    ctx.closePath();
+    if (this.state.key) {
+      ctx.beginPath();
+      ctx.rect(this.state.x, 40, 50, 50);
+      ctx.fillStyle = "#FF0000";
+      ctx.fill();
+      ctx.closePath();
 
-    requestAnimationFrame(() => this.update())
+      this.setState({x:this.state.x +10})
+    } else {
+      ctx.beginPath();
+      ctx.rect(this.state.x, 40, 50, 50);
+      ctx.fillStyle = "#000000";
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    requestAnimationFrame(() => this.mainLoop())
   }
 
   componentDidMount() {
+    // set up input
+    window.addEventListener('keydown', event => {
+
+      console.log('key code:', event.keyCode)
+
+      if (event.keyCode === 32) {
+        this.setState({
+          key: true
+        })
+      }
+    })
+    window.addEventListener('keyup', event => {
+      if (event.keyCode === 32) {
+        this.setState({
+          key: false 
+        })
+      }
+    })
+    // set up game
     const ctx = this.refs.myCanvas.getContext('2d')
 
     this.setState({
       ctx
     })
 
-    requestAnimationFrame(() => this.update())
+    requestAnimationFrame(() => this.mainLoop())
   }
 
   render() {
