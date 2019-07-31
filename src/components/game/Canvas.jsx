@@ -4,7 +4,7 @@ export default class Canvas extends Component {
   state = {
     ctx: null,
     key: false,
-    x:0,
+    x: 0,
   }
 
   mainLoop() {
@@ -17,7 +17,7 @@ export default class Canvas extends Component {
       ctx.fill();
       ctx.closePath();
 
-      this.setState({x:this.state.x +10})
+      this.setState({ x: this.state.x + 10 })
     } else {
       ctx.beginPath();
       ctx.rect(this.state.x, 40, 50, 50);
@@ -44,10 +44,11 @@ export default class Canvas extends Component {
     window.addEventListener('keyup', event => {
       if (event.keyCode === 32) {
         this.setState({
-          key: false 
+          key: false
         })
       }
     })
+
     // set up game
     const ctx = this.refs.myCanvas.getContext('2d')
 
