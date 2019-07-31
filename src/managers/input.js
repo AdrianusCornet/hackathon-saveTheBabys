@@ -19,8 +19,6 @@ let horizontal = 0
 let vertical = 0
 
 function handleKeyDown(event) {
-  console.log('key code', event.keyCode)
-
   switch (event.keyCode) {
     case KEY.LEFT:
     case KEY.A:
@@ -47,6 +45,33 @@ function handleKeyDown(event) {
       break;
   }
 }
+function handleKeyUp(event) {
+  switch (event.keyCode) {
+    case KEY.LEFT:
+    case KEY.A:
+      directions.left = 0
+      calculateHorizontal()
+      break;
+    case KEY.RICHT:
+    case KEY.D:
+      directions.richt = 0
+      calculateHorizontal()
+      break;
+    case KEY.UP:
+    case KEY.W:
+      directions.up = 0
+      calculateVertical()
+      break;
+    case KEY.DOWN:
+    case KEY.S:
+      directions.down = 0
+      calculateVertical()
+      break;
+
+    default:
+      break;
+  }
+}
 
 function calculateHorizontal() {
   horizontal = (-directions.left + directions.richt) * MOVE_SPEED
@@ -55,4 +80,4 @@ function calculateVertical() {
   vertical = (-directions.up + directions.down) * MOVE_SPEED
 }
 
-export { horizontal, vertical, handleKeyDown }
+export { horizontal, vertical, handleKeyDown, handleKeyUp }

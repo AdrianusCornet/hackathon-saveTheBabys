@@ -1,53 +1,51 @@
 import React, { Component } from 'react'
-import { handleKeyDown } from '../../managers/input'
+import { handleKeyDown, handleKeyUp, horizontal, vertical } from '../../managers/input'
 
 export default class Canvas extends Component {
   state = {
     ctx: null,
     key: false,
-    x: 0,
+    playerX: 0,
+    playerY: 0,
   }
 
   mainLoop() {
     const ctx = this.state.ctx
 
-    if (this.state.key) {
-      ctx.beginPath();
-      ctx.rect(this.state.x, 40, 50, 50);
-      ctx.fillStyle = "#FF0000";
-      ctx.fill();
-      ctx.closePath();
-
-      this.setState({ x: this.state.x + 10 })
-    } else {
-      ctx.beginPath();
-      ctx.rect(this.state.x, 40, 50, 50);
-      ctx.fillStyle = "#000000";
-      ctx.fill();
-      ctx.closePath();
-    }
+    // game logic
+    this.setState({
+      playerX: this.state.playerX + horizontal,
+      playerY: this.state.playerY + vertical
+    })
+    
+    // draw
+    // -background
+    ctx.beginPath()
+    ctx.rect(0, 0, 900, 900)
+    ctx.fillStyle = "#000000"
+    ctx.fill()
+    ctx.closePath()
+    // -player
+    ctx.beginPath()
+    ctx.rect(this.state.playerX, this.state.playerY, 100, 100)
+    ctx.fillStyle = "#ff0000"
+    ctx.fill()
+    ctx.closePath()
 
     requestAnimationFrame(() => this.mainLoop())
   }
 
-  componentDidMount() {
-    // set up input
+  inputSetup() {
     window.addEventListener('keydown', event => {
       handleKeyDown(event)
-
-      if (event.keyCode === 32) {
-        this.setState({
-          key: true
-        })
-      }
     })
     window.addEventListener('keyup', event => {
-      if (event.keyCode === 32) {
-        this.setState({
-          key: false
-        })
-      }
+      handleKeyUp(event)
     })
+  }
+
+  componentDidMount() {
+    this.inputSetup()
 
     // set up game
     const ctx = this.refs.myCanvas.getContext('2d')
@@ -62,8 +60,8 @@ export default class Canvas extends Component {
   render() {
     return (
       <canvas ref='myCanvas'
-        width={1000}
-        height={1000}
+        width={900}
+        height={900}
       />
     )
   }
