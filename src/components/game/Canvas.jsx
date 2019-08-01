@@ -1,15 +1,18 @@
 import React, { Component } from 'react'
-import { handleKeyDown, handleKeyUp, horizontal, vertical, pollGamepad, gamePadConnect, gamePadDisconnect } from '../../managers/input'
+import InputManager from '../../managers/input'
 
 export default class Canvas extends Component {
   state = {
     ctx: null,
+    inputManager: new InputManager(),
     playerX: 0,
     playerY: 0,
   }
 
   mainLoop() {
     const ctx = this.state.ctx
+    const {horizontal, vertical} = this.state.inputManager.movment
+
     pollGamepad()
 
     // game logic
