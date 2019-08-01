@@ -42,9 +42,6 @@ export default class InputManager {
       this._gamepadIsConnected = false
     })
   }
-  removeEventLiseners() {
-
-  }
 
   handleKeyDown(event) {
     switch (event.keyCode) {
