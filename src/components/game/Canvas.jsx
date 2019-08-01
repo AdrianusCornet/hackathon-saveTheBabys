@@ -13,7 +13,7 @@ export default class Canvas extends Component {
     const ctx = this.state.ctx
     const {horizontal, vertical} = this.state.inputManager.movment
 
-    pollGamepad()
+    this.state.inputManager.pollGamepad()
 
     // game logic
    
@@ -37,20 +37,8 @@ export default class Canvas extends Component {
 
     requestAnimationFrame(() => this.mainLoop())
   }
-
-  inputSetup() {
-    window.addEventListener('keydown', event => {
-      handleKeyDown(event)
-    })
-    window.addEventListener('keyup', event => {
-      handleKeyUp(event)
-    })
-    gamePadConnect()
-    gamePadDisconnect()
-  }
-
   componentDidMount() {
-    this.inputSetup()
+    this.state.inputManager.initEventLiseners()
 
     // set up game
     const ctx = this.refs.myCanvas.getContext('2d')
