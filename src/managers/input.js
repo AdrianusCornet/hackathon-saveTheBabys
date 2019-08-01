@@ -42,8 +42,26 @@ export default class InputManager {
       this._gamepadIsConnected = false
     })
   }
+  pollGamepad() {
+    if (this._gamepadIsConnected) {
+      const gpAxes = navigator.getGamepads()[0].axes
+      const hAxe = this.aplayDeathZone(gpAxes[0])
+      const vAxe = this.aplayDeathZone(gpAxes[1])
+      this.movment.horizontal = Math.round(hAxe * this._movementSpeed)
+      this.movment.vertical = Math.round(vAxe * this._movementSpeed)
+    }
+  }
+  aplayDeathZone(axe) {
+    if (axe < this._deathZone && axe > -this._deathZone) {
+      return 0
+    }
+    return axe
+  }
 
   handleKeyDown(event) {
+    if(this._gamepadIsConnected) {
+      return
+    }
     switch (event.keyCode) {
       case KEY.LEFT:
       case KEY.A:
@@ -71,6 +89,9 @@ export default class InputManager {
     }
   }
   handleKeyUp(event) {
+    if(this._gamepadIsConnected) {
+      return
+    }
     switch (event.keyCode) {
       case KEY.LEFT:
       case KEY.A:
@@ -102,23 +123,6 @@ export default class InputManager {
     this.movment.horizontal = (-this._directions.left + this._directions.richt) * this._movementSpeed
   }
   calculateVertical() {
-    this.vertical = (-this._directions.up + this._directions.down) * this._movementSpeed
+    this.movment.vertical = (-this._directions.up + this._directions.down) * this._movementSpeed
   }
-}
-
-
-function pollGamepad() {
-  if (gamepadIsConnected) {
-    const gpAxes = navigator.getGamepads()[0].axes
-    const hAxe = deatZone(gpAxes[0])
-    const vAxe = deatZone(gpAxes[1])
-    horizontal = Math.round(hAxe * INITIAL_MOVE_SPEED)
-    vertical = Math.round(vAxe * INITIAL_MOVE_SPEED)
-  }
-}
-function deatZone(axe) {
-  if (axe < INITIAL_DEATH_ZONE && axe > -INITIAL_DEATH_ZONE) {
-    return 0
-  }
-  return axe
 }
