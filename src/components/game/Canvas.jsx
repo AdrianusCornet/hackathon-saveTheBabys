@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
-import { handleKeyDown, handleKeyUp, horizontal, vertical, pollGamepad, gamePadConnect, gamePadDisconnect } from '../../managers/input'
+import InputManager from '../../managers/input'
 
 export default class Canvas extends Component {
   state = {
     ctx: null,
+    inputManager: new InputManager(),
     playerX: 0,
     playerY: 0,
   }
 
   mainLoop() {
     const ctx = this.state.ctx
-    pollGamepad()
+    const {horizontal, vertical} = this.state.inputManager.movment
+
+    this.state.inputManager.pollGamepad()
 
     // game logic
    
@@ -22,7 +25,7 @@ export default class Canvas extends Component {
     // -background
     ctx.beginPath()
     ctx.rect(0, 0, 900, 900)
-    ctx.fillStyle = "#000000"
+    ctx.fillStyle = "#0000ff"
     ctx.fill()
     ctx.closePath()
     // -player
@@ -34,20 +37,8 @@ export default class Canvas extends Component {
 
     requestAnimationFrame(() => this.mainLoop())
   }
-
-  inputSetup() {
-    window.addEventListener('keydown', event => {
-      handleKeyDown(event)
-    })
-    window.addEventListener('keyup', event => {
-      handleKeyUp(event)
-    })
-    gamePadConnect()
-    gamePadDisconnect()
-  }
-
   componentDidMount() {
-    this.inputSetup()
+    this.state.inputManager.initEventLiseners()
 
     // set up game
     const ctx = this.refs.myCanvas.getContext('2d')
