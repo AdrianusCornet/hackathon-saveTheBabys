@@ -1,31 +1,23 @@
 import React, { Component } from 'react'
-import { handleKeyDown, handleKeyUp, horizontal, vertical } from '../../managers/input'
+import { handleKeyDown, handleKeyUp, horizontal, vertical, pollGamepad, gamePadConnect, gamePadDisconnect } from '../../managers/input'
 
 export default class Canvas extends Component {
   state = {
     ctx: null,
-    gamePadInput: false,
     playerX: 0,
     playerY: 0,
   }
 
   mainLoop() {
     const ctx = this.state.ctx
+    pollGamepad()
 
     // game logic
-    if (this.state.gamePadInput) {
-      const gpAxes = navigator.getGamepads()[0].axes
-      this.setState({
-        playerX: this.state.playerX + Math.round(gpAxes[0] * 5),
-        playerY: this.state.playerY + Math.round(gpAxes[1] * 5)
-      })
-    } else {
+   
       this.setState({
         playerX: this.state.playerX + horizontal,
         playerY: this.state.playerY + vertical
       })
-    }
-
     // draw
     // -background
     ctx.beginPath()
@@ -50,16 +42,8 @@ export default class Canvas extends Component {
     window.addEventListener('keyup', event => {
       handleKeyUp(event)
     })
-    window.addEventListener('gamepadconnected', event => {
-      this.setState({
-        gamePadInput: true,
-      })
-    })
-    window.addEventListener('gamepaddisconnected', event => {
-      this.setState({
-        gamePadInput: false
-      })
-    })
+    gamePadConnect()
+    gamePadDisconnect()
   }
 
   componentDidMount() {

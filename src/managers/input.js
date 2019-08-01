@@ -9,6 +9,7 @@ const KEY = {
   D: 68,
 }
 const MOVE_SPEED = 10
+const DEAT_ZONE = 0.15
 const directions = {
   left: 0,
   richt: 0,
@@ -17,6 +18,7 @@ const directions = {
 }
 let horizontal = 0
 let vertical = 0
+let gamepadIsConnected = false
 
 function handleKeyDown(event) {
   switch (event.keyCode) {
@@ -72,6 +74,32 @@ function handleKeyUp(event) {
       break;
   }
 }
+function gamePadConnect() {
+  window.addEventListener('gamepadconnected', event => {
+    gamepadIsConnected = true
+  })
+}
+function gamePadDisconnect() {
+  window.addEventListener('gamepaddisconnected', event => {
+    gamepadIsConnected = false
+  })
+}
+
+function pollGamepad() {
+  if(gamepadIsConnected) {
+    const gpAxes = navigator.getGamepads()[0].axes
+    const hAxe = deatZone(gpAxes[0])
+    const vAxe = deatZone(gpAxes[1])
+    horizontal = Math.round(hAxe * MOVE_SPEED)
+    vertical = Math.round(vAxe * MOVE_SPEED)
+  }
+}
+function deatZone(axe) {
+  if(axe < DEAT_ZONE && axe > -DEAT_ZONE) {
+    return 0
+  }
+  return axe
+}
 
 function calculateHorizontal() {
   horizontal = (-directions.left + directions.richt) * MOVE_SPEED
@@ -80,4 +108,5 @@ function calculateVertical() {
   vertical = (-directions.up + directions.down) * MOVE_SPEED
 }
 
-export { horizontal, vertical, handleKeyDown, handleKeyUp }
+
+export { horizontal, vertical, handleKeyDown, handleKeyUp, gamePadConnect, gamePadDisconnect, pollGamepad }
