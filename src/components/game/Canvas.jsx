@@ -22,7 +22,7 @@ export default class Canvas extends Component {
     // -background
     ctx.beginPath()
     ctx.rect(0, 0, 900, 900)
-    ctx.fillStyle = "#000000"
+    ctx.fillStyle = "#0000ff"
     ctx.fill()
     ctx.closePath()
     // -player
