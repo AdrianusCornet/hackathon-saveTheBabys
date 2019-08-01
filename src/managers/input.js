@@ -10,6 +10,16 @@ const KEY = {
 }
 const MOVE_SPEED = 10
 const DEAT_ZONE = 0.15
+
+export class InputManager {
+  constructor() {
+    this.movment = {
+      horizontal: 0,
+      vertical: 0,
+    }
+  }
+}
+
 const directions = {
   left: 0,
   richt: 0,
