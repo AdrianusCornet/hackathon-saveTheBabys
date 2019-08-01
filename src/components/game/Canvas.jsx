@@ -7,6 +7,8 @@ export default class Canvas extends Component {
     inputManager: new InputManager(),
     playerX: 0,
     playerY: 0,
+    screanX: null,
+    screenY: null,
   }
 
   mainLoop() {
@@ -24,7 +26,7 @@ export default class Canvas extends Component {
     // draw
     // -background
     ctx.beginPath()
-    ctx.rect(0, 0, 900, 900)
+    ctx.rect(0, 0, this.state.screanX, this.state.screenY)
     ctx.fillStyle = "#0000ff"
     ctx.fill()
     ctx.closePath()
@@ -38,23 +40,26 @@ export default class Canvas extends Component {
     requestAnimationFrame(() => this.mainLoop())
   }
   componentDidMount() {
-    this.state.inputManager.initEventLiseners()
-
     // set up game
     const ctx = this.refs.myCanvas.getContext('2d')
+    
+    this.state.inputManager.initEventLiseners()
 
     this.setState({
-      ctx
+      ctx,
+      screanX: window.innerWidth - 0,
+      screenY: window.innerHeight - 3,
     })
 
     requestAnimationFrame(() => this.mainLoop())
   }
 
   render() {
+    console.log('X', this.state.screanX, 'Y', this.state.screenY)
     return (
       <canvas ref='myCanvas'
-        width={900}
-        height={900}
+        width={this.state.screanX}
+        height={this.state.screenY}
       />
     )
   }
