@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import InputManager from '../../managers/input'
 
+const PLAYER_SIZE = 100
+
 export default class Canvas extends Component {
   state = {
     ctx: null,
     inputManager: new InputManager(),
     playerX: 0,
     playerY: 0,
-    screanX: null,
+    screenX: null,
     screenY: null,
   }
 
@@ -18,15 +20,31 @@ export default class Canvas extends Component {
     this.state.inputManager.pollGamepad()
 
     // game logic
+      let playerX = this.state.playerX + horizontal
+      let playerY = this.state.playerY + vertical
+
+      if (playerX < 0) {
+        playerX = 0
+      }
+      if(playerX + PLAYER_SIZE > this.state.screenX) {
+        playerX = this.state.screenX - PLAYER_SIZE
+      }
+
+      if (playerY < 0) {
+        playerY = 0
+      }
+      if(playerY + PLAYER_SIZE > this.state.screenY) {
+        playerY = this.state.screenY - PLAYER_SIZE
+      }
    
       this.setState({
-        playerX: this.state.playerX + horizontal,
-        playerY: this.state.playerY + vertical
+        playerX,
+        playerY,
       })
     // draw
     // -background
     ctx.beginPath()
-    ctx.rect(0, 0, this.state.screanX, this.state.screenY)
+    ctx.rect(0, 0, this.state.screenX, this.state.screenY)
     ctx.fillStyle = "#0000ff"
     ctx.fill()
     ctx.closePath()
@@ -47,7 +65,7 @@ export default class Canvas extends Component {
 
     this.setState({
       ctx,
-      screanX: window.innerWidth - 0,
+      screenX: window.innerWidth - 0,
       screenY: window.innerHeight - 3,
     })
 
@@ -55,10 +73,10 @@ export default class Canvas extends Component {
   }
 
   render() {
-    console.log('X', this.state.screanX, 'Y', this.state.screenY)
+    console.log('X', this.state.screenX, 'Y', this.state.screenY)
     return (
       <canvas ref='myCanvas'
-        width={this.state.screanX}
+        width={this.state.screenX}
         height={this.state.screenY}
       />
     )
