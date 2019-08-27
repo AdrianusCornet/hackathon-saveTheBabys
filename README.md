@@ -10,4 +10,12 @@ To run the game use the following commands:
 1. npm install
 1. npm start
 
-## 
+## Technologies used
+
+* [React Native](https://facebook.github.io/react-native/)
+* [Redux](https://redux.js.org)
+* [Gamepad API](https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API)
+
+## Acknowledgments
+
+*
